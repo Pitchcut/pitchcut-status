@@ -30,6 +30,8 @@ sites:
 
 status-website:
   cname: ""                    # set a custom domain here later, or leave blank for the *.github.io URL
+  baseUrl: /pitchcut-status    # REQUIRED when served from <owner>.github.io/<repo>: the app's asset
+                               # paths are built from this; without it the page loads blank/404 CSS
   name: Pitchcut Status
   introTitle: "Pitchcut status"
   introMessage: "Live availability of the Pitchcut platform. Powered by Upptime."
