@@ -1,0 +1,49 @@
+# Upptime config for the Pitchcut public status page.
+#
+# Upptime (https://upptime.js.org) is a free, open-source uptime monitor: a GitHub Actions cron
+# pings each URL every few minutes, commits the results, and publishes a status page to GitHub Pages.
+# It runs in ITS OWN repo — deliberately, so it survives a full Pitchcut outage (a status page hosted
+# on the app it monitors can't report the app being down). It's also why this lives here only as a
+# staged copy: the Pitchcut repo's own Actions are disabled (billing), but a separate PUBLIC repo
+# gets free unlimited Actions minutes.
+#
+# One-time bootstrap (see ops/upptime/README.md for the click-by-click):
+#   1. Generate a new PUBLIC repo from https://github.com/upptime/upptime (the template).
+#   2. Replace its .upptimerc.yml with this file.
+#   3. Add a repo secret GH_PAT (a fine-grained PAT with contents+issues+pages write on that repo).
+#   4. Enable GitHub Pages (Settings → Pages → source: GitHub Actions).
+# The monitored URLs below are PUBLIC endpoints and hold no secrets, so nothing sensitive lives here.
+
+owner: Pitchcut              # the GitHub org that owns the status repo (renamed from Bedrockdude10)
+repo: pitchcut-status         # the status repo you create in step 1 (rename if you prefer)
+
+sites:
+  - name: Pitchcut app (web)
+    url: https://pitchcut.app/
+  - name: Liveness (/healthz)
+    url: https://api.pitchcut.app/healthz
+    # /healthz proves the process is up without touching the DB — it stays green through a DB blip.
+  - name: Readiness — database (/readyz)
+    url: https://api.pitchcut.app/readyz
+    # /readyz does one bounded DB round-trip and returns 503 if the database is unreachable. Upptime
+    # treats the 503 as "down", so this line IS the database-reachability monitor.
+
+status-website:
+  cname: ""                    # set a custom domain here later, or leave blank for the *.github.io URL
+  name: Pitchcut Status
+  introTitle: "Pitchcut status"
+  introMessage: "Live availability of the Pitchcut platform. Powered by Upptime."
+  navbar:
+    - title: Status
+      href: /
+    - title: GitHub
+      href: https://github.com/Pitchcut/pitchcut-status
+
+# How often the cron checks (Upptime defaults are fine; uncomment to tune):
+# workflowSchedule:
+#   graphs: "0 0 * * *"
+#   responseTime: "0/5 * * * *"
+#   staticSite: "0/5 * * * *"
+#   summary: "0/5 * * * *"
+#   updates: "0 0 * * *"
+#   updateTemplate: "0 0 * * *"
